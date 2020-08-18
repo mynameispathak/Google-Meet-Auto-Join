@@ -3,18 +3,18 @@ var currTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-d
 // Enter the Time of Meeting in HH:MM 24 Hour format
 var destTime = prompt("Enter time of Meeting in HH:MM format 24  Hours");
 
-var time4 = {
+setTimeout(function () {
+    alert("You will be joined to the Meeting at " + destTime + " \nEnjoy your sleep now! I am here to save you :))");
+}, 1000);
+
+var timeToMeet = {
     timeDiffer: function () {
         var start = this.cTime.split(":");
         var end = this.dTime.split(":");
         if (parseInt(start[0]) <= parseInt(end[0])) {
-            var time1 = Math.abs((parseInt(start[0]) * 60 + parseInt(start[1])) - (parseInt(end[0]) * 60 + parseInt(end[1])));
+            return Math.abs((parseInt(start[0]) * 60 + parseInt(start[1])) - (parseInt(end[0]) * 60 + parseInt(end[1])));
         }
-        else {
-            var time1 = (((24 - parseInt(start[0])) * 60 - parseInt(start[1])) + (parseInt(end[0]) * 60 + parseInt(end[1])));
-        }
-        //         console.log(time1);
-        return time1;
+        return (((24 - parseInt(start[0])) * 60 - parseInt(start[1])) + (parseInt(end[0]) * 60 + parseInt(end[1])));
     }
 }
 
@@ -23,27 +23,38 @@ var t = {
     dTime: destTime,
 }
 
-var tF = time4.timeDiffer.call(t);
+var timeInMinutes = timeToMeet.timeDiffer.call(t);
 
-var delayInMicroSec = tF * 60 * 1000;
+var delayInMicroSec = (timeInMinutes * 60 - 30) * 1000;
 
-// Mic Button
+// Turn OFF Mic Button
 window.document.querySelectorAll(".DPvwYc.JnDFsc.dMzo5")[0].click();
-// Webcam Button
+// Turn OFF Webcam Button
 window.document.querySelectorAll(".DPvwYc.JnDFsc.dMzo5")[1].click();
 
-setInterval(function () {
-    document.querySelector(".u7qdSd.BB6Rdd").click();
-}, 5000);
-
+// Click Google Meet Logo in every 5 seconds to keep website running
 setTimeout(function () {
+    setInterval(function () {
+        document.querySelector(".u7qdSd.BB6Rdd").click();
+    }, 5000);
+}, 120000);
 
+// Click Join Button after the required time
+setTimeout(function () {
     // Join Button
     window.document.querySelector(".NPEfkd").click();
-
 }, delayInMicroSec);
 
-var i = delayInMicroSec/1000;
-while (i--) {
-    console.log("Joining in : " + i);
-}
+var counter = delayInMicroSec / 1000;
+
+var countDown = setInterval(function () {
+    console.log("Joining in : " + counter + "seconds");
+    counter = counter - 5;
+    if (counter === 0) {
+        setTimeout(function () {
+            console.log("Successfully Joined! But you don't need to worry, keep sleeping ;)-");
+            alert("Successfully Joined! But you don't need to worry, keep sleeping ;)-");
+        }, 1500);
+        clearInterval(countDown);
+    }
+}, 5000);
